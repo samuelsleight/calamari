@@ -20,6 +20,13 @@ public:
     virtual void register_object(calamari::State& state);
 };
 
+class KeyHandler {
+public:
+    virtual void on_key(calamari::Application& application, int key) = 0;
+
+    virtual void register_object(calamari::State& state);
+};
+
 CALAMARI_NS_END
 
 #endif //CALAMARI_COMPONENTS_HPP

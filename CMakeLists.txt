@@ -18,7 +18,9 @@ set(HEADER_FILES
         include/calamari/state.hpp
         include/calamari/object.hpp
         include/calamari/objectbase.hpp
-        include/calamari/components.hpp)
+        include/calamari/components.hpp
+        include/calamari/eventmanager.hpp
+        include/calamari/eventcallbacks.hpp)
 
 set(SOURCE_FILES ${HEADER_FILES}
         src/gl/gl_core_3_3.cpp
@@ -26,7 +28,9 @@ set(SOURCE_FILES ${HEADER_FILES}
         src/window.cpp
         src/renderer.cpp
         src/components.cpp
-        src/state.cpp)
+        src/state.cpp
+        src/eventmanager.cpp
+        src/eventcallbacks.cpp)
 
 add_library(calamari SHARED ${SOURCE_FILES})
 target_link_libraries(calamari ${GLFW_LIBRARIES})

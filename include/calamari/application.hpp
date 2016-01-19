@@ -8,6 +8,7 @@
 #include "defines.hpp"
 #include "window.hpp"
 #include "renderer.hpp"
+#include "eventmanager.hpp"
 #include "state.hpp"
 
 #include <memory>
@@ -16,6 +17,8 @@ CALAMARI_NS
 
 class Application {
 public:
+    friend class EventManager;
+
     Application();
 
     template<typename StateT, typename... StateTConstructorArgs>
@@ -29,7 +32,6 @@ public:
         this->state = std::unique_ptr<State>(new StateT(*this, std::forward<StateTConstructorArgs>(args)...));
     }
 
-    void close_callback();
     void quit();
 
 private:
@@ -37,6 +39,7 @@ private:
 
     Window window;
     Renderer renderer;
+    EventManager events;
 
     std::unique_ptr<State> state;
 };

@@ -7,7 +7,7 @@
 CALAMARI_NS
 
 Application::Application()
-    : window(*this, 800, 600, "Hello World"), renderer(window) {}
+    : window(events, 800, 600, "Hello World"), renderer(window), events(*this) {}
 
 void Application::run() {
     while (!window.should_close()) {
@@ -18,10 +18,6 @@ void Application::run() {
 
         window.poll_events();
     }
-}
-
-void Application::close_callback() {
-    state->on_quit(*this);
 }
 
 void Application::quit() {

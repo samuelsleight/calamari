@@ -4,20 +4,11 @@
 
 #include "calamari/window.hpp"
 #include "calamari/application.hpp"
+#include "calamari/eventcallbacks.hpp"
 
 CALAMARI_NS
 
-namespace callbacks {
-
-void close_callback(GLFWwindow* window) {
-    glfwSetWindowShouldClose(window, false);
-    Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-    app->close_callback();
-}
-
-}
-
-Window::Window(Application& app, int w, int h, const char* title) {
+Window::Window(EventManager& events, int w, int h, const char* title) {
     if(!glfwInit()) {
         throw 5;
     }
@@ -28,8 +19,9 @@ Window::Window(Application& app, int w, int h, const char* title) {
     }
 
     glfwMakeContextCurrent(this->window);
-    glfwSetWindowUserPointer(this->window, &app);
+    glfwSetWindowUserPointer(this->window, &events);
     glfwSetWindowCloseCallback(this->window, callbacks::close_callback);
+    glfwSetKeyCallback(this->window, callbacks::key_callback);
 
     if(!gl::sys::LoadFunctions()) {
         throw 5;
@@ -50,8 +42,8 @@ void Window::poll_events() {
     glfwPollEvents();
 }
 
-void Window::close() {
-    glfwSetWindowShouldClose(this->window, true);
+void Window::close(bool should) {
+    glfwSetWindowShouldClose(this->window, should);
 }
 
 CALAMARI_NS_END

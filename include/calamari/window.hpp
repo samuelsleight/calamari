@@ -16,13 +16,15 @@ CALAMARI_NS
 
 class Application;
 class Renderer;
+class EventManager;
 
 class Window {
 private:
     friend class Application;
     friend class Renderer;
+    friend class EventManager;
 
-    Window(Application& app, int w, int h, const char* title);
+    Window(EventManager& events, int w, int h, const char* title);
     ~Window();
 
     int should_close();
@@ -30,7 +32,7 @@ private:
 
     GLFWwindow* window;
 
-    void close();
+    void close(bool should = true);
 };
 
 CALAMARI_NS_END
