@@ -6,6 +6,7 @@
 #define CALAMARI_CAMERA_HPP
 
 #include "defines.hpp"
+#include "colour.hpp"
 
 CALAMARI_NS
 
@@ -14,7 +15,9 @@ class Renderer;
 
 class Camera {
 public:
-    virtual void register_object(calamari::State& state);
+    virtual void register_component(calamari::State& state);
+
+    Colour background;
 
 private:
     friend class Renderer;

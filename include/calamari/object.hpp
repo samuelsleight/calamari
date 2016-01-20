@@ -26,7 +26,7 @@ struct ObjectSpecBase<> : public ObjectBase {
 template<typename Component, typename... Components>
 struct ObjectSpecBase<Component, Components...> : public ObjectSpecBase<Components...>, Component {
     virtual void register_object(calamari::State& state) {
-        Component::register_object(state);
+        Component::register_component(state);
         ObjectSpecBase<Components...>::register_object(state);
     }
 };

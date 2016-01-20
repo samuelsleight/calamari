@@ -41,7 +41,8 @@ public:
 
     void on_tick(Application& application);
     void on_quit(Application& application);
-    void on_key(Application& application, int key);
+    void on_key_press(Application& application, int key);
+    void on_key_release(Application& application, int key);
 
 private:
     friend class Renderer;

@@ -15,7 +15,18 @@ void EventManager::close_callback() {
 }
 
 void EventManager::key_callback(int key, int scancode, int action, int mods) {
-    application.state->on_key(application, key);
+    switch(action) {
+        case GLFW_PRESS:
+            application.state->on_key_press(application, key);
+            break;
+
+        case GLFW_RELEASE:
+            application.state->on_key_release(application, key);
+            break;
+
+        default:
+            break;
+    }
 }
 
 CALAMARI_NS_END

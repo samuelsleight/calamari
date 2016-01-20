@@ -17,21 +17,22 @@ class TickHandler {
 public:
     virtual void on_tick(calamari::Application& application) = 0;
 
-    virtual void register_object(calamari::State& state);
+    virtual void register_component(calamari::State& state);
 };
 
 class QuitHandler {
 public:
     virtual void on_quit(calamari::Application& application) = 0;
 
-    virtual void register_object(calamari::State& state);
+    virtual void register_component(calamari::State& state);
 };
 
 class KeyHandler {
 public:
-    virtual void on_key(calamari::Application& application, int key) = 0;
+    virtual void on_key_press(calamari::Application& application, int key) = 0;
+    virtual void on_key_release(calamari::Application& application, int key) = 0;
 
-    virtual void register_object(calamari::State& state);
+    virtual void register_component(calamari::State& state);
 };
 
 CALAMARI_NS_END

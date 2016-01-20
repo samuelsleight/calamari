@@ -36,9 +36,15 @@ void State::on_quit(Application& application) {
     }
 }
 
-void State::on_key(Application& application, int key) {
+void State::on_key_press(Application& application, int key) {
     for(KeyHandler& handler : key_handlers) {
-        handler.on_key(application, key);
+        handler.on_key_press(application, key);
+    }
+}
+
+void State::on_key_release(Application& application, int key) {
+    for(KeyHandler& handler : key_handlers) {
+        handler.on_key_release(application, key);
     }
 }
 

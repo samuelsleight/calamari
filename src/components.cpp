@@ -8,15 +8,15 @@
 
 CALAMARI_NS
 
-void TickHandler::register_object(calamari::State& state) {
+void TickHandler::register_component(calamari::State& state) {
     state.register_tick_handler(*this);
 }
 
-void QuitHandler::register_object(calamari::State &state) {
+void QuitHandler::register_component(calamari::State &state) {
     state.register_quit_handler(*this);
 }
 
-void KeyHandler::register_object(calamari::State& state) {
+void KeyHandler::register_component(calamari::State& state) {
     state.register_key_handler(*this);
 }
 

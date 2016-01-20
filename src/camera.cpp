@@ -8,13 +8,13 @@
 
 CALAMARI_NS
 
-void Camera::register_object(calamari::State& state) {
+void Camera::register_component(calamari::State& state) {
     state.set_camera(*this);
 }
 
 void Camera::clear() {
     gl::Clear(gl::COLOR_BUFFER_BIT);
-    gl::ClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    gl::ClearColor(background.r, background.g, background.b, background.a);
 }
 
 CALAMARI_NS_END
