@@ -1,10 +1,16 @@
 #include <calamari/application.hpp>
 #include <calamari/object.hpp>
 #include <calamari/components.hpp>
+#include <calamari/camera.hpp>
+
+class TestCamera : public calamari::Object<calamari::Camera> {
+public:
+    TestCamera(calamari::State& state) {}
+};
 
 class TestObject : public calamari::Object<calamari::QuitHandler, calamari::KeyHandler> {
 public:
-    TestObject(calamari::State& state) {}
+    TestObject(calamari::State& state, std::string name) {}
 
     void test(std::string wat) {
         std::cout << wat << std::endl;
@@ -23,16 +29,14 @@ public:
 class HelloState : public calamari::State {
 public:
     HelloState(calamari::Application& application, std::string name)
-        : application(application), name(name) {
+        : application(application) {
 
-        object = add<TestObject>();
+        object = add<TestObject>(name);
+        add<TestCamera>();
     }
-
-    void tick() {}
 
 private:
     calamari::Application& application;
-    std::string name;
     std::weak_ptr<TestObject> object;
 };
 

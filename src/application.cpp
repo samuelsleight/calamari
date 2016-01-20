@@ -11,10 +11,9 @@ Application::Application()
 
 void Application::run() {
     while (!window.should_close()) {
-        state->tick();
+        state->on_tick(*this);
 
-        renderer.clear(0.0f, 0.5f, 0.7f, 1.0f);
-        renderer.render();
+        renderer.render(*state);
 
         window.poll_events();
     }

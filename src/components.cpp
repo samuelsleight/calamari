@@ -8,13 +8,15 @@
 
 CALAMARI_NS
 
+void TickHandler::register_object(calamari::State& state) {
+    state.register_tick_handler(*this);
+}
+
 void QuitHandler::register_object(calamari::State &state) {
-    std::cout << "Quit handler registered" << std::endl;
     state.register_quit_handler(*this);
 }
 
 void KeyHandler::register_object(calamari::State& state) {
-    std::cout << "Key handler registered" << std::endl;
     state.register_key_handler(*this);
 }
 

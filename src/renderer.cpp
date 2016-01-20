@@ -3,19 +3,20 @@
 //
 
 #include "calamari/renderer.hpp"
+#include "calamari/state.hpp"
+#include "calamari/camera.hpp"
 
 CALAMARI_NS
 
 Renderer::Renderer(Window& window)
     : window(window) {}
 
-void Renderer::render() {
-    glfwSwapBuffers(this->window.window);
-}
+void Renderer::render(State& state) {
+    if(state.camera) {
+        state.camera->clear();
+    }
 
-void Renderer::clear(float r, float a, float g, float b) {
-    gl::Clear(gl::COLOR_BUFFER_BIT);
-    gl::ClearColor(r, g, b, a);
+    glfwSwapBuffers(this->window.window);
 }
 
 CALAMARI_NS_END

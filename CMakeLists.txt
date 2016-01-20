@@ -19,6 +19,7 @@ set(HEADER_FILES
         include/calamari/object.hpp
         include/calamari/objectbase.hpp
         include/calamari/components.hpp
+        include/calamari/camera.hpp
         include/calamari/eventmanager.hpp
         include/calamari/eventcallbacks.hpp)
 
@@ -28,6 +29,7 @@ set(SOURCE_FILES ${HEADER_FILES}
         src/window.cpp
         src/renderer.cpp
         src/components.cpp
+        src/camera.cpp
         src/state.cpp
         src/eventmanager.cpp
         src/eventcallbacks.cpp)

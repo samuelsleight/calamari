@@ -41,7 +41,7 @@ private:
     Renderer renderer;
     EventManager events;
 
-    std::unique_ptr<State> state;
+    std::shared_ptr<State> state;
 };
 
 CALAMARI_NS_END

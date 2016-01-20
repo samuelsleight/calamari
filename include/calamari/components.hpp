@@ -13,6 +13,13 @@ CALAMARI_NS
 class Application;
 class State;
 
+class TickHandler {
+public:
+    virtual void on_tick(calamari::Application& application) = 0;
+
+    virtual void register_object(calamari::State& state);
+};
+
 class QuitHandler {
 public:
     virtual void on_quit(calamari::Application& application) = 0;

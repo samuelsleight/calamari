@@ -10,12 +10,13 @@
 
 namespace calamari {
 
+class State;
+
 class Renderer {
 public:
     Renderer(Window& window);
 
-    void clear(float d, float d1, float d2, float d3);
-    void render();
+    void render(State& state);
 
 private:
     Window& window;
