@@ -9,4 +9,6 @@
 #define CALAMARI_NS namespace CALAMARI_NS_NAME {
 #define CALAMARI_NS_END }
 
+#define CALAMARI_GLSL(name, source) const GLchar* name = "#version 330\n" #source
+
 #endif //CALAMARI_DEFINES_HPP

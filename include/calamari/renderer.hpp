@@ -14,11 +14,14 @@ class State;
 
 class Renderer {
 public:
-    Renderer(Window& window);
+    Renderer(Window& window) throw(InitialisationError);
 
+    void load_scene(State& state);
     void render(State& state);
 
 private:
+    GLint shader_program;
+
     Window& window;
 };
 

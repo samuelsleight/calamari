@@ -7,6 +7,7 @@
 
 #include "calamari/defines.hpp"
 #include "calamari/gl/gl_core_3_3.hpp"
+#include "calamari/error.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -24,7 +25,7 @@ private:
     friend class Renderer;
     friend class EventManager;
 
-    Window(EventManager& events, int w, int h, const char* title);
+    Window(EventManager& events, int w, int h, const char* title) throw(InitialisationError);
     ~Window();
 
     int should_close();

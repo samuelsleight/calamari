@@ -2,6 +2,18 @@
 #include <calamari/object.hpp>
 #include <calamari/components.hpp>
 #include <calamari/camera.hpp>
+#include <calamari/renderable.hpp>
+
+class TestTriangle : public calamari::Object<calamari::Renderable> {
+public:
+    TestTriangle(calamari::State& state, float offset) {
+        add_vertex(0.0 + offset, 0.5);
+        add_vertex(0.5, -0.5 + offset);
+        add_vertex(-0.5 + offset, -0.5);
+
+        std::cout << "Triangle Added" << std::endl;
+    }
+};
 
 class TestCamera : public calamari::Object<calamari::Camera, calamari::KeyHandler> {
 public:
@@ -14,7 +26,11 @@ public:
         background.b = toggle ? 0.5 : 1.0;
     }
 
-    void on_key_release(calamari::Application& application, int key) {}
+    void on_key_release(calamari::Application& application, int key) {
+        background.r = 1.0 - background.r;
+        background.g = 1.0 - background.g;
+        background.b = 1.0 - background.b;
+    }
 
     bool toggle;
 };
@@ -46,6 +62,8 @@ public:
 
         object = add<TestObject>(name);
         add<TestCamera>();
+        add<TestTriangle>(0.0f);
+        add<TestTriangle>(0.3f);
     }
 
 private:
@@ -54,5 +72,9 @@ private:
 };
 
 int main() {
-    calamari::Application().start<HelloState>("Sam");
+    try {
+        calamari::Application().start<HelloState>("Sam");
+    } catch(calamari::CalamariError& error) {
+        std::cout << error.what() << std::endl;
+    }
 }

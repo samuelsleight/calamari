@@ -19,17 +19,19 @@ class Application {
 public:
     friend class EventManager;
 
-    Application();
+    Application() throw(InitialisationError);
 
     template<typename StateT, typename... StateTConstructorArgs>
     void start(StateTConstructorArgs&&... args) {
-        this->state = std::unique_ptr<State>(new StateT(*this, std::forward<StateTConstructorArgs>(args)...));
+        this->state = std::make_shared<StateT>(*this, std::forward<StateTConstructorArgs>(args)...);
+        renderer.load_scene(*state);
         run();
     }
 
     template<typename StateT, typename... StateTConstructorArgs>
     void enter_state(StateTConstructorArgs&&... args) {
-        this->state = std::unique_ptr<State>(new StateT(*this, std::forward<StateTConstructorArgs>(args)...));
+        this->state = std::make_shared<StateT>(*this, std::forward<StateTConstructorArgs>(args)...);
+        renderer.load_scene(*state);
     }
 
     void quit();

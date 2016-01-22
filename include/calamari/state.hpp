@@ -18,6 +18,8 @@ class Renderer;
 class TickHandler;
 class QuitHandler;
 class KeyHandler;
+
+class Renderable;
 class Camera;
 
 class State {
@@ -27,8 +29,8 @@ public:
     virtual ~State() {}
 
     template<typename ObjectT, typename... ObjectTConstructorArgs>
-    std::weak_ptr<ObjectT> add(ObjectTConstructorArgs& ... args) {
-        objects.emplace_back(new ObjectT(*this, args...));
+    std::shared_ptr<ObjectT> add(ObjectTConstructorArgs&&... args) {
+        objects.emplace_back(new ObjectT(*this, std::forward<ObjectTConstructorArgs>(args)...));
         objects.back()->register_object(*this);
         return std::static_pointer_cast<ObjectT>(objects.back());
     };
@@ -37,6 +39,7 @@ public:
     void register_quit_handler(QuitHandler& handler);
     void register_key_handler(KeyHandler& handler);
 
+    void register_renderable(Renderable& renderable);
     void set_camera(Camera& camera);
 
     void on_tick(Application& application);
@@ -52,6 +55,7 @@ private:
     std::vector<std::reference_wrapper<TickHandler>> tick_handlers;
     std::vector<std::reference_wrapper<QuitHandler>> quit_handlers;
     std::vector<std::reference_wrapper<KeyHandler>> key_handlers;
+    std::vector<std::reference_wrapper<Renderable>> renderables;
 
     Camera* camera;
 };

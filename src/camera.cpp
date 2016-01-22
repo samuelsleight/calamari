@@ -12,7 +12,7 @@ void Camera::register_component(calamari::State& state) {
     state.set_camera(*this);
 }
 
-void Camera::clear() {
+void Camera::clear_background() {
     gl::Clear(gl::COLOR_BUFFER_BIT);
     gl::ClearColor(background.r, background.g, background.b, background.a);
 }

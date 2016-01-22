@@ -22,7 +22,7 @@ public:
 private:
     friend class Renderer;
 
-    void clear();
+    void clear_background();
 };
 
 CALAMARI_NS_END

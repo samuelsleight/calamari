@@ -6,7 +6,7 @@
 
 CALAMARI_NS
 
-Application::Application()
+Application::Application() throw(InitialisationError)
     : window(events, 800, 600, "Hello World"), renderer(window), events(*this) {}
 
 void Application::run() {

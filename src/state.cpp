@@ -4,6 +4,7 @@
 
 #include "calamari/state.hpp"
 #include "calamari/components.hpp"
+#include "calamari/renderable.hpp"
 #include "calamari/camera.hpp"
 
 CALAMARI_NS
@@ -18,6 +19,10 @@ void State::register_quit_handler(QuitHandler& handler) {
 
 void State::register_key_handler(KeyHandler& handler) {
     key_handlers.push_back(handler);
+}
+
+void State::register_renderable(Renderable& renderable) {
+    renderables.push_back(renderable);
 }
 
 void State::set_camera(Camera& camera) {
