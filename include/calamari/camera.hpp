@@ -7,6 +7,7 @@
 
 #include "defines.hpp"
 #include "colour.hpp"
+#include "vector.hpp"
 
 CALAMARI_NS
 
@@ -18,6 +19,7 @@ public:
     virtual void register_component(calamari::State& state);
 
     Colour background;
+    Vector<2, int> viewport;
 
 private:
     friend class Renderer;

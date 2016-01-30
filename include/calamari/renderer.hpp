@@ -8,7 +8,13 @@
 #include "defines.hpp"
 #include "window.hpp"
 
-namespace calamari {
+CALAMARI_NS
+
+namespace impl {
+
+GLuint create_shader(GLenum shader_type, const GLchar** shader_source, const char* error_message);
+
+}
 
 class State;
 
@@ -20,12 +26,11 @@ public:
     void render(State& state);
 
 private:
-    GLint shader_program;
+    GLuint shader_program;
 
     Window& window;
 };
 
-}
-
+CALAMARI_NS_END
 
 #endif //CALAMARI_RENDERER_HPP

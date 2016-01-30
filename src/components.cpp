@@ -8,16 +8,20 @@
 
 CALAMARI_NS
 
-void TickHandler::register_component(calamari::State& state) {
+void TickHandler::register_component(State& state) {
     state.register_tick_handler(*this);
 }
 
-void QuitHandler::register_component(calamari::State &state) {
+void QuitHandler::register_component(State &state) {
     state.register_quit_handler(*this);
 }
 
-void KeyHandler::register_component(calamari::State& state) {
+void KeyHandler::register_component(State& state) {
     state.register_key_handler(*this);
+}
+
+void ResizeHandler::register_component(State& state) {
+    state.register_resize_handler(*this);
 }
 
 CALAMARI_NS_END

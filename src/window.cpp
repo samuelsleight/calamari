@@ -19,7 +19,6 @@ void error_callback(int error, const char* description) {
 
 }
 
-
 Window::Window(EventManager& events, int w, int h, const char* title) throw(InitialisationError) {
     if(!glfwInit()) {
         throw InitialisationError("Error initialising GLFW");
@@ -41,12 +40,11 @@ Window::Window(EventManager& events, int w, int h, const char* title) throw(Init
     glfwSetWindowUserPointer(this->window, &events);
     glfwSetWindowCloseCallback(this->window, callbacks::close_callback);
     glfwSetKeyCallback(this->window, callbacks::key_callback);
+    glfwSetFramebufferSizeCallback(this->window, callbacks::resize_callback);
 
     if(!gl::sys::LoadFunctions()) {
         throw InitialisationError("Error loading OpenGL functions");
     }
-
-    gl::Viewport(0, 0, w, h);
 }
 
 Window::~Window() {

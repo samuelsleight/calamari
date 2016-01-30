@@ -7,23 +7,39 @@
 #include "calamari/state.hpp"
 #include "calamari/camera.hpp"
 
-#include <iostream>
-
 CALAMARI_NS
 
 CALAMARI_GLSL(vertex_shader_source,
-layout(location = 0) in vec2 position;
+layout(location = 0) in vec3 position;
 
 void main() {
-    gl_Position = vec4(position, 0.0, 1.0);
+    gl_Position = vec4(position, 1);
 });
 
 CALAMARI_GLSL(fragment_shader_source,
 out vec4 colour;
 
 void main() {
-    colour = vec4(1, 1, 1, 1);
+    colour = vec4(1, 0, 0, 1);
 });
+
+namespace impl {
+
+GLuint create_shader(GLenum shader_type, const GLchar** shader_source, const char* error_message) {
+    GLuint shader = gl::CreateShader(shader_type);
+    gl::ShaderSource(shader, 1, shader_source, nullptr);
+    gl::CompileShader(shader);
+
+    GLint status;
+    gl::GetShaderiv(shader, gl::COMPILE_STATUS, &status);
+    if (status != gl::TRUE_) {
+        throw InitialisationError(error_message);
+    }
+
+    return shader;
+}
+
+}
 
 Renderer::Renderer(Window& window) throw(InitialisationError)
     : window(window) {
@@ -33,26 +49,9 @@ Renderer::Renderer(Window& window) throw(InitialisationError)
     gl::GenVertexArrays(1, &vao);
     gl::BindVertexArray(vao);
 
-    // Compile vertex shader
-    GLuint vertex_shader = gl::CreateShader(gl::VERTEX_SHADER);
-    gl::ShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
-    gl::CompileShader(vertex_shader);
-
-    GLint status;
-    gl::GetShaderiv(vertex_shader, gl::COMPILE_STATUS, &status);
-    if(status != gl::TRUE_) {
-        throw InitialisationError("Error compiling vertex shader");
-    }
-
-    // Compile fragment shader
-    GLuint fragment_shader = gl::CreateShader(gl::FRAGMENT_SHADER);
-    gl::ShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
-    gl::CompileShader(fragment_shader);
-
-    gl::GetShaderiv(fragment_shader, gl::COMPILE_STATUS, &status);
-    if(status != gl::TRUE_) {
-        throw InitialisationError("Error compiling fragment shader");
-    }
+    // Compile shaders
+    GLuint vertex_shader = impl::create_shader(gl::VERTEX_SHADER, &vertex_shader_source, "Error compiling vertex shader");
+    GLuint fragment_shader = impl::create_shader(gl::FRAGMENT_SHADER, &fragment_shader_source, "Error compiling fragment shader");
 
     // Create shader program
     shader_program = gl::CreateProgram();
@@ -76,20 +75,22 @@ void Renderer::load_scene(State& state) {
 void Renderer::render(State& state) {
     if(state.camera) {
         state.camera->clear_background();
+        gl::Viewport(0, 0, state.camera->viewport.x, state.camera->viewport.y);
+
+        GLint pos = gl::GetAttribLocation(shader_program, "position");
+        for(Renderable& renderable : state.renderables) {
+            gl::BindBuffer(gl::ARRAY_BUFFER, renderable.vbo);
+            gl::VertexAttribPointer(pos, 3, gl::FLOAT, gl::FALSE_, 0, 0);
+            gl::EnableVertexAttribArray(pos);
+            gl::DrawArrays(gl::TRIANGLES, 0, renderable.vertices.size() / 3);
+        }
+
+        gl::DisableVertexAttribArray(pos);
+        gl::BindBuffer(gl::ARRAY_BUFFER, 0);
+
+        glfwSwapBuffers(this->window.window);
     }
 
-    GLint pos = gl::GetAttribLocation(shader_program, "position");
-    for(Renderable& renderable : state.renderables) {
-        gl::BindBuffer(gl::ARRAY_BUFFER, renderable.vbo);
-        gl::VertexAttribPointer(pos, 2, gl::FLOAT, gl::FALSE_, 0, 0);
-        gl::EnableVertexAttribArray(pos);
-        gl::DrawArrays(gl::TRIANGLES, 0, renderable.vertices.size() / 2);
-    }
-
-    gl::DisableVertexAttribArray(pos);
-    gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-
-    glfwSwapBuffers(this->window.window);
 }
 
 CALAMARI_NS_END

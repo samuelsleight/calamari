@@ -21,6 +21,10 @@ void State::register_key_handler(KeyHandler& handler) {
     key_handlers.push_back(handler);
 }
 
+void State::register_resize_handler(ResizeHandler& handler) {
+    resize_handlers.push_back(handler);
+}
+
 void State::register_renderable(Renderable& renderable) {
     renderables.push_back(renderable);
 }
@@ -50,6 +54,12 @@ void State::on_key_press(Application& application, int key) {
 void State::on_key_release(Application& application, int key) {
     for(KeyHandler& handler : key_handlers) {
         handler.on_key_release(application, key);
+    }
+}
+
+void State::on_resize(Application& application, Vector<2, int> size) {
+    for(ResizeHandler& handler : resize_handlers) {
+        handler.on_resize(application, size);
     }
 }
 

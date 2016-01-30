@@ -34,6 +34,8 @@ public:
         renderer.load_scene(*state);
     }
 
+    Vector<2, int> get_window_size();
+
     void quit();
 
 private:

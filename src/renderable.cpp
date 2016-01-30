@@ -11,9 +11,10 @@ void Renderable::register_component(calamari::State& state) {
     state.register_renderable(*this);
 }
 
-void Renderable::add_vertex(float x, float y) {
+void Renderable::add_vertex(float x, float y, float z) {
     vertices.push_back(x);
     vertices.push_back(y);
+    vertices.push_back(z);
 }
 
 CALAMARI_NS_END

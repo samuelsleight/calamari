@@ -6,27 +6,33 @@
 
 class TestTriangle : public calamari::Object<calamari::Renderable> {
 public:
-    TestTriangle(calamari::State& state, float offset) {
-        add_vertex(0.0 + offset, 0.5);
-        add_vertex(0.5, -0.5 + offset);
-        add_vertex(-0.5 + offset, -0.5);
+    TestTriangle(calamari::State& state) {
+        add_vertex(0.3, 0.3, 0.0);
+        add_vertex(-0.4, 0.9, 0.0);
+        add_vertex(-0.9, -0.3, 0.0);
 
         std::cout << "Triangle Added" << std::endl;
     }
 };
 
-class TestCamera : public calamari::Object<calamari::Camera, calamari::KeyHandler> {
+class TestCamera : public calamari::Object<calamari::Camera, calamari::ResizeHandler, calamari::KeyHandler> {
 public:
-    TestCamera(calamari::State& state) : toggle(true) {}
-
-    void on_key_press(calamari::Application& application, int key) {
-        toggle = !toggle;
-        background.r = toggle ? 1.0 : 0.5;
-        background.g = toggle ? 0.0 : 0.5;
-        background.b = toggle ? 0.5 : 1.0;
+    TestCamera(calamari::State& state, calamari::Vector<2, int> size) : toggle(true) {
+        viewport = size;
     }
 
-    void on_key_release(calamari::Application& application, int key) {
+    void on_resize(calamari::Application& application, calamari::Vector<2, int> size) override {
+        viewport = size;
+    }
+
+    void on_key_press(calamari::Application& application, int key) override {
+        toggle = !toggle;
+        background.x = toggle ? 1.0 : 0.5;
+        background.y = toggle ? 0.0 : 0.5;
+        background.z = toggle ? 0.5 : 1.0;
+    }
+
+    void on_key_release(calamari::Application& application, int key) override {
         background.r = 1.0 - background.r;
         background.g = 1.0 - background.g;
         background.b = 1.0 - background.b;
@@ -43,16 +49,16 @@ public:
         std::cout << wat << std::endl;
     }
 
-    void on_quit(calamari::Application& application) {
+    void on_quit(calamari::Application& application) override {
         std::cout << "Quitting!" << std::endl;
         application.quit();
     }
 
-    void on_key_press(calamari::Application& application, int key) {
+    void on_key_press(calamari::Application& application, int key) override {
         std::cout << "Key pressed: " << key << std::endl;
     }
 
-    void on_key_release(calamari::Application& application, int key) {}
+    void on_key_release(calamari::Application& application, int key) override {}
 };
 
 class HelloState : public calamari::State {
@@ -61,9 +67,8 @@ public:
         : application(application) {
 
         object = add<TestObject>(name);
-        add<TestCamera>();
-        add<TestTriangle>(0.0f);
-        add<TestTriangle>(0.3f);
+        add<TestCamera>(application.get_window_size());
+        add<TestTriangle>();
     }
 
 private:

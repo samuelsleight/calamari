@@ -8,8 +8,7 @@ CALAMARI_NS
 
 Colour::Colour() : Colour(1, 1, 1, 1) {}
 
-Colour::Colour(float r, float g, float b, float a)
-    : r(r), g(g), b(b), a(a) {}
+Colour::Colour(float r, float g, float b, float a) : Vector<4, float>(r, g, b, a) {}
 
 const Colour Colour::red = Colour(1.0, 0.0, 0.0);
 const Colour Colour::green = Colour(0.0, 1.0, 0.0);

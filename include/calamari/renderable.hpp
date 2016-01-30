@@ -19,7 +19,7 @@ class Renderable {
 public:
     virtual void register_component(calamari::State& state);
 
-    void add_vertex(float x, float y);
+    void add_vertex(float x, float y, float z);
 
 private:
     friend class Renderer;

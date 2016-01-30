@@ -20,12 +20,18 @@ struct ObjectSpecBase;
 
 template<>
 struct ObjectSpecBase<> : public ObjectBase {
-    virtual void register_object(calamari::State& state) {}
+protected:
+    friend class State;
+
+    virtual void register_object(calamari::State& state) override {}
 };
 
 template<typename Component, typename... Components>
 struct ObjectSpecBase<Component, Components...> : public ObjectSpecBase<Components...>, Component {
-    virtual void register_object(calamari::State& state) {
+protected:
+    friend class State;
+
+    virtual void register_object(calamari::State& state) override {
         Component::register_component(state);
         ObjectSpecBase<Components...>::register_object(state);
     }
@@ -41,7 +47,7 @@ public:
 private:
     friend class State;
 
-    void register_object(State& state) {
+    void register_object(State& state) override {
         impl::ObjectSpecBase<Components...>::register_object(state);
     }
 };

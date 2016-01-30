@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.3)
 project(calamari)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/Modules)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS 0)
 
 include_directories(BEFORE ./include)
 
@@ -21,7 +22,8 @@ set(HEADER_FILES
     include/calamari/eventcallbacks.hpp
     include/calamari/colour.hpp
     include/calamari/renderable.hpp
-    include/calamari/error.hpp)
+    include/calamari/error.hpp
+    include/calamari/vector.hpp)
 
 set(SOURCE_FILES ${HEADER_FILES}
     src/gl/gl_core_3_3.cpp
@@ -41,20 +43,7 @@ add_library(calamari SHARED ${SOURCE_FILES})
 add_executable(calamari_test EXCLUDE_FROM_ALL ${HEADER_FILES} main.cpp)
 target_link_libraries(calamari_test calamari)
 
-#Attempt to link libraries
-find_package(PkgConfig)
-
-if(PkgConfig_FOUND)
-    pkg_search_module(GLFW glfw3)
-endif()
-
-if(NOT GLFW_FOUND)
-    find_package(GLFW)
-endif()
-
-if(GLFW_FOUND)
-    include_directories(SYSTEM ${GLFW_INCLUDE_DIR})
-    target_link_libraries(calamari ${GLFW_LIBRARIES})
-else()
-    error("Unable to find GLFW, please set GLFW_LOCATION in your environment")
-endif()
+# GLFW
+find_package(GLFW)
+include_directories(SYSTEM ${GLFW_INCLUDE_DIR})
+target_link_libraries(calamari ${GLFW_LIBRARIES})

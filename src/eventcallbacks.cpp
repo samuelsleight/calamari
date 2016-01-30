@@ -21,6 +21,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     events->key_callback(key, scancode, action, mods);
 }
 
+void resize_callback(GLFWwindow* window, int width, int height) {
+    EventManager* events = static_cast<EventManager*>(glfwGetWindowUserPointer(window));
+    events->resize_callback(width, height);
+}
+
 }
 
 CALAMARI_NS_END

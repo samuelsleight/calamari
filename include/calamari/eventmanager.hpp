@@ -22,6 +22,7 @@ private:
 public:
     void close_callback();
     void key_callback(int key, int scancode, int action, int mods);
+    void resize_callback(int width, int height);
 };
 
 CALAMARI_NS_END

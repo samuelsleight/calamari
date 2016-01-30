@@ -16,6 +16,7 @@ class State;
 namespace impl {
 
 struct ObjectBase : public std::enable_shared_from_this<ObjectBase> {
+public:
     virtual void register_object(calamari::State& state) = 0;
 };
 

@@ -7,6 +7,7 @@
 
 #include "defines.hpp"
 #include "objectbase.hpp"
+#include "vector.hpp"
 
 #include <vector>
 
@@ -18,6 +19,7 @@ class Renderer;
 class TickHandler;
 class QuitHandler;
 class KeyHandler;
+class ResizeHandler;
 
 class Renderable;
 class Camera;
@@ -38,6 +40,7 @@ public:
     void register_tick_handler(TickHandler& handler);
     void register_quit_handler(QuitHandler& handler);
     void register_key_handler(KeyHandler& handler);
+    void register_resize_handler(ResizeHandler& handler);
 
     void register_renderable(Renderable& renderable);
     void set_camera(Camera& camera);
@@ -46,6 +49,7 @@ public:
     void on_quit(Application& application);
     void on_key_press(Application& application, int key);
     void on_key_release(Application& application, int key);
+    void on_resize(Application& application, Vector<2, int> size);
 
 private:
     friend class Renderer;
@@ -55,6 +59,7 @@ private:
     std::vector<std::reference_wrapper<TickHandler>> tick_handlers;
     std::vector<std::reference_wrapper<QuitHandler>> quit_handlers;
     std::vector<std::reference_wrapper<KeyHandler>> key_handlers;
+    std::vector<std::reference_wrapper<ResizeHandler>> resize_handlers;
     std::vector<std::reference_wrapper<Renderable>> renderables;
 
     Camera* camera;

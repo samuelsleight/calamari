@@ -4,6 +4,7 @@
 
 #include "calamari/eventmanager.hpp"
 #include "calamari/application.hpp"
+#include "calamari/vector.hpp"
 
 CALAMARI_NS
 
@@ -27,6 +28,10 @@ void EventManager::key_callback(int key, int scancode, int action, int mods) {
         default:
             break;
     }
+}
+
+void EventManager::resize_callback(int width, int height) {
+    application.state->on_resize(application, Vector<2, int>(width, height));
 }
 
 CALAMARI_NS_END
