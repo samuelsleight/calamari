@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.3)
 project(calamari)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS 0)
@@ -22,8 +24,11 @@ set(HEADER_FILES
     include/calamari/eventcallbacks.hpp
     include/calamari/colour.hpp
     include/calamari/renderable.hpp
-    include/calamari/error.hpp
-    include/calamari/vector.hpp)
+    include/calamari/vector.hpp
+    include/calamari/matrix.hpp
+    include/calamari/transformation.hpp
+    include/calamari/transformable.hpp
+    include/calamari/error.hpp)
 
 set(SOURCE_FILES ${HEADER_FILES}
     src/gl/gl_core_3_3.cpp
@@ -37,6 +42,8 @@ set(SOURCE_FILES ${HEADER_FILES}
     src/eventcallbacks.cpp
     src/colour.cpp
     src/renderable.cpp
+    src/transformation.cpp
+    src/transformable.cpp
     src/error.cpp)
 
 add_library(calamari SHARED ${SOURCE_FILES})

@@ -8,13 +8,14 @@
 #include "defines.hpp"
 #include "colour.hpp"
 #include "vector.hpp"
+#include "transformable.hpp"
 
 CALAMARI_NS
 
 class State;
 class Renderer;
 
-class Camera {
+class Camera : public Transformable {
 public:
     virtual void register_component(calamari::State& state);
 

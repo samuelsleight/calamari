@@ -9,6 +9,14 @@
 
 CALAMARI_NS
 
+State::~State() {
+    gl::DeleteBuffers(1, &vbo);
+
+    for(Renderable& renderable : renderables) {
+        gl::DeleteBuffers(1, &renderable.ebo);
+    }
+}
+
 void State::register_tick_handler(TickHandler& handler) {
     tick_handlers.push_back(handler);
 }

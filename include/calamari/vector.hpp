@@ -8,20 +8,32 @@
 #include "defines.hpp"
 
 #include <utility>
-#include <stddef.h>
+#include <stdexcept>
+#include <cstddef>
 
 CALAMARI_NS
+
+template<size_t, typename>
+class VectorBase;
+
+template<size_t, typename>
+class Vector;
 
 namespace impl {
 
 template<typename>
 struct VectorImpl;
 
-template<int... Idxs>
+template<size_t... Idxs>
 struct VectorImpl<std::index_sequence<Idxs...>> {
     template<typename T, typename U>
     static void eq_impl(T& lhs, const U& rhs) {
-        ((lhs.data[Idxs] = rhs.data[Idxs]) , ...);
+        ((lhs.data[Idxs] = rhs.get(Idxs)) , ...);
+    }
+
+    template<typename T, typename U>
+    static constexpr auto dot_impl(const T& lhs, const U& rhs) {
+        return ((lhs.get(Idxs) * rhs.get(Idxs)) + ...);
     }
 };
 
@@ -50,6 +62,15 @@ public:
 
     void operator=(const VectorBase<size, T>& other) {
         impl::VectorImpl<std::make_index_sequence<size>>::eq_impl(*this, other);
+    }
+
+    constexpr const T& get(size_t n) const {
+        return n < size ? data[n] : throw std::invalid_argument("Index must be less than Vector::size");
+    }
+
+    template<typename U>
+    constexpr auto dot(const Vector<size, U>& other) const noexcept {
+        return impl::VectorImpl<std::make_index_sequence<size>>::dot_impl(*this, other);
     }
 
 protected:

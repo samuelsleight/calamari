@@ -10,10 +10,13 @@
 CALAMARI_NS
 
 CALAMARI_GLSL(vertex_shader_source,
-layout(location = 0) in vec3 position;
+in vec3 position;
+
+uniform mat4 model;
+uniform mat4 camera;
 
 void main() {
-    gl_Position = vec4(position, 1);
+    gl_Position = inverse(camera) * model * vec4(position, 1);
 });
 
 CALAMARI_GLSL(fragment_shader_source,
@@ -66,9 +69,22 @@ void Renderer::load_scene(State& state) {
     for(Renderable& renderable : state.renderables) {
         gl::GenBuffers(1, &renderable.vbo);
         gl::BindBuffer(gl::ARRAY_BUFFER, renderable.vbo);
-        gl::BufferData(gl::ARRAY_BUFFER, renderable.vertices.size() * sizeof(float), &(renderable.vertices[0]), gl::STATIC_DRAW);
+        gl::BufferData(
+            gl::ARRAY_BUFFER,
+            renderable.vertices.size() * sizeof(decltype(renderable.vertices)::value_type),
+            &(renderable.vertices[0]),
+            gl::STATIC_DRAW);
+
+        gl::GenBuffers(1, &renderable.ebo);
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, renderable.ebo);
+        gl::BufferData(
+            gl::ELEMENT_ARRAY_BUFFER,
+            renderable.indices.size() * sizeof(decltype(renderable.indices)::value_type),
+            &(renderable.indices[0]),
+            gl::STATIC_DRAW);
     }
 
+    gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, 0);
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 }
 
@@ -77,15 +93,29 @@ void Renderer::render(State& state) {
         state.camera->clear_background();
         gl::Viewport(0, 0, state.camera->viewport.x, state.camera->viewport.y);
 
+        {
+            auto camera = state.camera->translation();
+            GLint pos = gl::GetUniformLocation(shader_program, "camera");
+            gl::UniformMatrix4fv(pos, 1, gl::TRUE_, &(camera.data[0]));
+        }
+
         GLint pos = gl::GetAttribLocation(shader_program, "position");
         for(Renderable& renderable : state.renderables) {
+            {
+                auto model = renderable.translation();
+                GLint pos = gl::GetUniformLocation(shader_program, "model");
+                gl::UniformMatrix4fv(pos, 1, gl::TRUE_, &(model.data[0]));
+            }
+
             gl::BindBuffer(gl::ARRAY_BUFFER, renderable.vbo);
+            gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, renderable.ebo);
             gl::VertexAttribPointer(pos, 3, gl::FLOAT, gl::FALSE_, 0, 0);
             gl::EnableVertexAttribArray(pos);
-            gl::DrawArrays(gl::TRIANGLES, 0, renderable.vertices.size() / 3);
+            gl::DrawArrays(gl::TRIANGLES, 0, renderable.indices.size());
         }
 
         gl::DisableVertexAttribArray(pos);
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, 0);
         gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
         glfwSwapBuffers(this->window.window);

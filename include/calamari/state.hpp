@@ -5,6 +5,7 @@
 #ifndef CALAMARI_STATE_HPP
 #define CALAMARI_STATE_HPP
 
+#include "gl/gl_core_3_3.hpp"
 #include "defines.hpp"
 #include "objectbase.hpp"
 #include "vector.hpp"
@@ -28,7 +29,7 @@ class State {
 public:
     State() = default;
 
-    virtual ~State() {}
+    virtual ~State();
 
     template<typename ObjectT, typename... ObjectTConstructorArgs>
     std::shared_ptr<ObjectT> add(ObjectTConstructorArgs&&... args) {
@@ -53,6 +54,10 @@ public:
 
 private:
     friend class Renderer;
+    friend class Renderable;
+
+    GLuint vbo;
+    std::vector<float> vertices;
 
     std::vector<std::shared_ptr<impl::ObjectBase>> objects;
 

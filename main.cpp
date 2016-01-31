@@ -4,21 +4,24 @@
 #include <calamari/camera.hpp>
 #include <calamari/renderable.hpp>
 
-class TestTriangle : public calamari::Object<calamari::Renderable> {
+class Triangle : public calamari::Object<calamari::Renderable> {
 public:
-    TestTriangle(calamari::State& state) {
+    Triangle(calamari::State& state) {
         add_vertex(0.3, 0.3, 0.0);
         add_vertex(-0.4, 0.9, 0.0);
         add_vertex(-0.9, -0.3, 0.0);
 
-        std::cout << "Triangle Added" << std::endl;
+        translate(1, 0, 0);
     }
 };
 
-class TestCamera : public calamari::Object<calamari::Camera, calamari::ResizeHandler, calamari::KeyHandler> {
+class Camera : public calamari::Object<calamari::Camera, calamari::ResizeHandler, calamari::KeyHandler> {
 public:
-    TestCamera(calamari::State& state, calamari::Vector<2, int> size) : toggle(true) {
+    Camera(calamari::State& state, calamari::Vector<2, int> size) : toggle(true) {
         viewport = size;
+
+        translate(1, 0, 0);
+        translate(0, 1, 0);
     }
 
     void on_resize(calamari::Application& application, calamari::Vector<2, int> size) override {
@@ -41,44 +44,33 @@ public:
     bool toggle;
 };
 
-class TestObject : public calamari::Object<calamari::QuitHandler, calamari::KeyHandler> {
+class Handler : public calamari::Object<calamari::QuitHandler> {
 public:
-    TestObject(calamari::State& state, std::string name) {}
-
-    void test(std::string wat) {
-        std::cout << wat << std::endl;
-    }
+    Handler(calamari::State& state) {}
 
     void on_quit(calamari::Application& application) override {
         std::cout << "Quitting!" << std::endl;
         application.quit();
     }
-
-    void on_key_press(calamari::Application& application, int key) override {
-        std::cout << "Key pressed: " << key << std::endl;
-    }
-
-    void on_key_release(calamari::Application& application, int key) override {}
 };
 
 class HelloState : public calamari::State {
 public:
-    HelloState(calamari::Application& application, std::string name)
+    HelloState(calamari::Application& application)
         : application(application) {
 
-        object = add<TestObject>(name);
-        add<TestCamera>(application.get_window_size());
-        add<TestTriangle>();
+        add<Handler>();
+        add<Camera>(application.get_window_size());
+        add<Triangle>();
     }
 
 private:
     calamari::Application& application;
-    std::weak_ptr<TestObject> object;
 };
 
 int main() {
     try {
-        calamari::Application().start<HelloState>("Sam");
+        calamari::Application().start<HelloState>();
     } catch(calamari::CalamariError& error) {
         std::cout << error.what() << std::endl;
     }
