@@ -5,10 +5,11 @@
 #ifndef CALAMARI_STATE_HPP
 #define CALAMARI_STATE_HPP
 
-#include "gl/gl_core_3_3.hpp"
+#include "gl/gl.hpp"
 #include "defines.hpp"
 #include "objectbase.hpp"
 #include "vector.hpp"
+#include "key.hpp"
 
 #include <vector>
 
@@ -48,8 +49,8 @@ public:
 
     void on_tick(Application& application);
     void on_quit(Application& application);
-    void on_key_press(Application& application, int key);
-    void on_key_release(Application& application, int key);
+    void on_key_press(Application& application, Key key);
+    void on_key_release(Application& application, Key key);
     void on_resize(Application& application, Vector<2, int> size);
 
 private:

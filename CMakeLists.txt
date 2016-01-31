@@ -11,6 +11,7 @@ include_directories(BEFORE ./include)
 
 set(HEADER_FILES
     include/calamari/gl/gl_core_3_3.hpp
+    include/calamari/gl/gl.hpp
     include/calamari/application.hpp
     include/calamari/defines.hpp
     include/calamari/window.hpp
@@ -28,6 +29,7 @@ set(HEADER_FILES
     include/calamari/matrix.hpp
     include/calamari/transformation.hpp
     include/calamari/transformable.hpp
+    include/calamari/key.hpp
     include/calamari/error.hpp)
 
 set(SOURCE_FILES ${HEADER_FILES}
@@ -44,6 +46,7 @@ set(SOURCE_FILES ${HEADER_FILES}
     src/renderable.cpp
     src/transformation.cpp
     src/transformable.cpp
+    src/key.cpp
     src/error.cpp)
 
 add_library(calamari SHARED ${SOURCE_FILES})

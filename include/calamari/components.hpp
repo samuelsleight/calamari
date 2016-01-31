@@ -30,8 +30,8 @@ public:
 
 class KeyHandler {
 public:
-    virtual void on_key_press(Application& application, int key) = 0;
-    virtual void on_key_release(Application& application, int key) = 0;
+    virtual void on_key_press(Application& application, Key key) = 0;
+    virtual void on_key_release(Application& application, Key key) = 0;
 
     virtual void register_component(State& state);
 };

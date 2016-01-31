@@ -5,11 +5,9 @@
 #ifndef CALAMARI_WINDOW_HPP
 #define CALAMARI_WINDOW_HPP
 
-#include "calamari/defines.hpp"
-#include "calamari/gl/gl_core_3_3.hpp"
-#include "calamari/error.hpp"
-
-#include <GLFW/glfw3.h>
+#include "gl/gl.hpp"
+#include "defines.hpp"
+#include "error.hpp"
 
 #include <string>
 

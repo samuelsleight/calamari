@@ -4,6 +4,7 @@
 
 #include "calamari/eventmanager.hpp"
 #include "calamari/application.hpp"
+#include "calamari/key.hpp"
 
 CALAMARI_NS
 
@@ -17,11 +18,11 @@ void EventManager::close_callback() {
 void EventManager::key_callback(int key, int scancode, int action, int mods) {
     switch(action) {
         case GLFW_PRESS:
-            application.state->on_key_press(application, key);
+            application.state->on_key_press(application, Key(key, scancode));
             break;
 
         case GLFW_RELEASE:
-            application.state->on_key_release(application, key);
+            application.state->on_key_release(application, Key(key, scancode));
             break;
 
         default:

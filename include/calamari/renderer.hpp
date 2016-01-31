@@ -5,6 +5,7 @@
 #ifndef CALAMARI_RENDERER_HPP
 #define CALAMARI_RENDERER_HPP
 
+#include "gl/gl.hpp"
 #include "defines.hpp"
 #include "window.hpp"
 

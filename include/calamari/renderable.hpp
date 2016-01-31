@@ -5,7 +5,7 @@
 #ifndef CALAMARI_RENDERABLE_HPP
 #define CALAMARI_RENDERABLE_HPP
 
-#include "gl/gl_core_3_3.hpp"
+#include "gl/gl.hpp"
 #include "defines.hpp"
 #include "transformable.hpp"
 
