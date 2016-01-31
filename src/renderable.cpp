@@ -12,7 +12,7 @@ void Renderable::register_component(calamari::State& state) {
 }
 
 size_t Renderable::get_index(float x, float y, float z) {
-    for(int i = 0; i < vertices.size(); i += 3) {
+    for(size_t i = 0; i < vertices.size(); i += 3) {
         if(vertices[i] == x && vertices[i + 1] == y && vertices[i + 2] == z) {
             return i;
         }

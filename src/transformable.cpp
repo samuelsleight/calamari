@@ -4,19 +4,28 @@
 
 #include "calamari/transformable.hpp"
 
+#include <cmath>
+
 CALAMARI_NS
 
 void Transformable::translate(float x, float y, float z) {
-    transformation.push_transformation(Matrix<4, 4, float>(
-        1, 0, 0, x,
-        0, 1, 0, y,
-        0, 0, 1, z,
-        0, 0, 0, 1
-    ));
+    push_transformation(translation(x, y, z));
 }
 
-Matrix<4, 4, float> Transformable::translation() {
-    return transformation.get_total_transformation();
+void Transformable::rotate(Axis axis, float radians) {
+    push_transformation(rotation(axis, radians));
+}
+
+Transformation Transformable::transformation() {
+    return stack.transformation();
 };
+
+Transformation Transformable::pop_transformation() {
+    return stack.pop_transformation();
+}
+
+Transformation Transformable::push_transformation(Matrix<4, 4, float> transformation) {
+    stack.push_transformation(transformation);
+}
 
 CALAMARI_NS_END

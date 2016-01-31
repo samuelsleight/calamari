@@ -4,6 +4,8 @@
 
 #include "calamari/transformation.hpp"
 
+#include <cmath>
+
 CALAMARI_NS
 
 TransformationStack::TransformationStack() : stack(nullptr) {}
@@ -28,17 +30,73 @@ void TransformationStack::push_transformation(Matrix<4, 4, float> transformation
     }
 }
 
-Matrix<4, 4, float> TransformationStack::get_total_transformation() {
+Transformation TransformationStack::transformation() {
     if(stack) {
-        return stack->transformation.total;
+        return stack->transformation;
     } else {
-        return Matrix<4, 4, float>(
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        );
+        return {
+            Matrix<4, 4, float>(
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            ),
+
+            Matrix<4, 4, float>(
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            ),
+        };
     }
 };
+
+Transformation TransformationStack::pop_transformation() {
+    Transformation ret = transformation();
+
+    if(stack) {
+        stack = stack->next;
+    }
+
+    return ret;
+}
+
+Matrix<4, 4, float> translation(float x, float y, float z) {
+   return Matrix<4, 4, float>(
+       1, 0, 0, x,
+       0, 1, 0, y,
+       0, 0, 1, z,
+       0, 0, 0, 1
+   );
+}
+
+Matrix<4, 4, float> rotation(Axis axis, float radians) {
+    switch(axis) {
+        case Axis::X:
+            return Matrix<4, 4, float>(
+                1, 0, 0, 0,
+                0, cos(radians), -sin(radians), 0,
+                0, sin(radians), cos(radians), 0,
+                0, 0, 0, 1
+            );
+
+        case Axis::Y:
+            return Matrix<4, 4, float>(
+                cos(radians), 0, sin(radians), 0,
+                0, 1, 0, 0,
+                -sin(radians), 0, cos(radians), 0,
+                0, 0, 0, 1
+            );
+
+        case Axis::Z:
+            return Matrix<4, 4, float>(
+                cos(radians), -sin(radians), 0, 0,
+                sin(radians), cos(radians), 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            );
+    }
+}
 
 CALAMARI_NS_END

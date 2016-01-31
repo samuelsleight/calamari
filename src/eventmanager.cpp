@@ -4,7 +4,6 @@
 
 #include "calamari/eventmanager.hpp"
 #include "calamari/application.hpp"
-#include "calamari/key.hpp"
 
 CALAMARI_NS
 

@@ -94,7 +94,7 @@ void Renderer::render(State& state) {
         gl::Viewport(0, 0, state.camera->viewport.x, state.camera->viewport.y);
 
         {
-            auto camera = state.camera->translation();
+            auto camera = state.camera->transformation().total;
             GLint pos = gl::GetUniformLocation(shader_program, "camera");
             gl::UniformMatrix4fv(pos, 1, gl::TRUE_, &(camera.data[0]));
         }
@@ -102,7 +102,7 @@ void Renderer::render(State& state) {
         GLint pos = gl::GetAttribLocation(shader_program, "position");
         for(Renderable& renderable : state.renderables) {
             {
-                auto model = renderable.translation();
+                auto model = renderable.transformation().total;
                 GLint pos = gl::GetUniformLocation(shader_program, "model");
                 gl::UniformMatrix4fv(pos, 1, gl::TRUE_, &(model.data[0]));
             }

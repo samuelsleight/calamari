@@ -2322,8 +2322,7 @@ bool IsVersionGEQ(int majorVersion, int minorVersion) {
 
     if (majorVersion < g_major_version) { return true; }
     if (majorVersion > g_major_version) { return false; }
-    if (minorVersion <= g_minor_version) { return true; }
-    return false;
+    return minorVersion <= g_minor_version;
 }
 
 } //namespace sys

@@ -12,6 +12,10 @@
 
 CALAMARI_NS
 
+enum class Axis {
+    X, Y, Z
+};
+
 struct Transformation {
     Transformation(Matrix<4, 4, float> transformation, Matrix<4, 4, float> total);
 
@@ -32,11 +36,15 @@ public:
 
     void push_transformation(Matrix<4, 4, float> transformation);
 
-    Matrix<4, 4, float> get_total_transformation();
+    Transformation transformation();
+    Transformation pop_transformation();
 
 private:
     std::shared_ptr<TransformationNode> stack;
 };
+
+Matrix<4, 4, float> translation(float x, float y, float z);
+Matrix<4, 4, float> rotation(Axis axis, float radians);
 
 CALAMARI_NS_END
 

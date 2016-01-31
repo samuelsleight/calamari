@@ -19,15 +19,24 @@ public:
         : up(false), down(false), left(false), right(false), toggle(true) {
 
         viewport = size;
+
+        translate(0, 0, 0);
     }
 
     void on_tick(calamari::Application& application) override {
+        calamari::Matrix<4, 4, float> translation = pop_transformation().transformation;
+        calamari::Matrix<4, 4, float> rotation = pop_transformation().transformation;
+
+        push_transformation(rotation * calamari::rotation(calamari::Axis::Y, 3.14159 / 30));
+
         if(up || down || left || right) {
-            translate(
+            push_transformation(translation * calamari::translation(
                 (left || right) ? (left ? -0.1 : 0.1) : 0,
                 (up || down) ? (up ? 0.1 : -0.1) : 0,
                 0
-            );
+            ));
+        } else {
+            push_transformation(translation);
         }
     }
 

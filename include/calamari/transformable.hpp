@@ -13,11 +13,14 @@ CALAMARI_NS
 class Transformable {
 public:
     void translate(float x, float y, float z);
+    void rotate(Axis axis, float radians);
 
-    Matrix<4, 4, float> translation();
+    Transformation transformation();
+    Transformation pop_transformation();
+    Transformation push_transformation(Matrix<4, 4, float> transformation);
 
 private:
-    TransformationStack transformation;
+    TransformationStack stack;
 };
 
 CALAMARI_NS_END
